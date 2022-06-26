@@ -1,0 +1,33 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["filterJson"]
+}
+
+generator tsed {
+  provider = "tsed-prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Country {
+  DE
+  FR
+  IT
+}
+
+enum Language {
+  de
+  fr
+  it
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  language Language
+  country  Country
+  name     String?
+}
