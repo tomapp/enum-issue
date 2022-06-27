@@ -3,7 +3,6 @@ import { Configuration, Inject } from "@tsed/di";
 import { PlatformApplication } from "@tsed/common";
 import "@tsed/platform-express"; // /!\ keep this import
 import "@tsed/socketio";
-import bodyParser from "body-parser";
 import compress from "compression";
 import cookieParser from "cookie-parser";
 import methodOverride from "method-override";
@@ -19,6 +18,15 @@ import * as rest from "./controllers/rest";
   httpPort: process.env.PORT || 8083,
   httpsPort: false, // TODO
   componentsScan: [`./src/protocols/*.ts`],
+  express: {
+    bodyParser: {
+      text: {},
+      json: {},
+      urlencoded: {
+        extended: true
+      }
+    }
+  },
   mount: {
     "/api": [...Object.values(rest)]
   },
@@ -32,11 +40,7 @@ import * as rest from "./controllers/rest";
     cors(),
     cookieParser(),
     compress({}),
-    methodOverride(),
-    bodyParser.json(),
-    bodyParser.urlencoded({
-      extended: true
-    }),
+    methodOverride()
   ],
   views: {
     root: join(process.cwd(), "../views"),
